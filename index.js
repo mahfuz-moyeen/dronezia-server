@@ -30,11 +30,19 @@ async function run() {
         //  Inventory section API  //
         // /////////////////////// //
 
-        // get all inventory items  // local server >> http://localhost:5000/inventory
-        app.get('/inventory', async (req, res) => {
+        // get all inventory items  // local server >> http://localhost:5000/inventories
+        app.get('/inventories', async (req, res) => {
             const query = {}
             const cursor = inventoriesCollection.find(query);
             const inventories = await cursor.toArray();
+            res.send(inventories)
+        })
+
+        // get 6 inventory items  // local server >> http://localhost:5000/inventory
+        app.get('/inventory', async (req, res) => {
+            const query = {}
+            const cursor = inventoriesCollection.find(query);
+            const inventories = await cursor.limit(6).toArray();
             res.send(inventories)
         })
 
