@@ -53,6 +53,14 @@ async function run() {
             const result = await inventoriesCollection.deleteOne(query);
             res.send(result);
         })
+
+        //post single inventory item  http://localhost:5000/inventory
+        app.post('/inventory', async (req, res) => {
+            const addInventoryItem = req.body
+            console.log(addInventoryItem);
+            const result = await inventoriesCollection.insertOne(addInventoryItem)
+            res.send(result)
+        })
     }
     finally {
 
