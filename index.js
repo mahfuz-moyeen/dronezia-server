@@ -1,27 +1,54 @@
 const express = require('express');
 const cors = require('cors');
 const { MongoClient, ServerApiVersion } = require('mongodb');
+require('dotenv').config();
 
+
+const app = express();
 
 // port
 const port = process.env.PORT || 5000;
 
-const app = express();
 
 //middleware
 app.use(express.json());
 app.use(cors());
 
+
 // mongodb server
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.irqio.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+
+const uri = "mongodb+srv://dronezia01:c5Bg955POqksmY5Q@cluster0.r2ma4.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+// client.connect(err => {
+//   const collection = client.db("test").collection("devices");
+//   console.log('work');
+//   // perform actions on the collection object
+//   client.close();
+// });
 
-client.connect(err => {
-    const collection = client.db("test").collection("devices");
-    console.log('mongo db runinng');
-    client.close();
-});
+async function run() {
+    try {
+        await client.connect();
+        const inventoriesCollection = client.db("droneZia").collection("inventory");
 
+        // /////////////////////////
+        // // Inventory section API//
+        // /////////////////////////
+
+        // // get all inventory
+        app.get('/inventory', async (req, res) => {
+            const query = {}
+            const cursor = inventoriesCollection.find(query)
+            const inventories = await cursor.toArray();
+            res.send(inventories)
+        })
+    }
+    finally {
+
+    }
+}
+
+run().catch(console.dir);
 
 
 // server root
