@@ -26,11 +26,11 @@ async function run() {
         await client.connect();
         const inventoriesCollection = client.db("droneZia").collection("inventory");
 
-        // /////////////////////////
-        // // Inventory section API//
-        // /////////////////////////
+        // /////////////////////// //
+        //  Inventory section API  //
+        // /////////////////////// //
 
-        // get all inventory items  http://localhost:5000/inventory
+        // get all inventory items  // local server >> http://localhost:5000/inventory
         app.get('/inventory', async (req, res) => {
             const query = {}
             const cursor = inventoriesCollection.find(query);
@@ -38,7 +38,7 @@ async function run() {
             res.send(inventories)
         })
 
-        // get single inventory item by id  http://localhost:5000/inventory/:id
+        // get single inventory item by id /// local server >>  http://localhost:5000/inventory/:id
         app.get('/inventory/:id', async (req, res) => {
             const id = req.params.id
             const query = { _id: ObjectId(id) };
@@ -46,7 +46,7 @@ async function run() {
             res.send(inventory);
         })
 
-        //delete single inventory item   http://localhost:5000/inventory/:id
+        //delete single inventory item // local server >> http://localhost:5000/inventory/:id
         app.delete('/inventory/:id', async (req, res) => {
             const id = req.params.id
             const query = { _id: ObjectId(id) };
@@ -54,7 +54,7 @@ async function run() {
             res.send(result);
         })
 
-        //post single inventory item  http://localhost:5000/inventory
+        //post single inventory item // local server >>  http://localhost:5000/inventory
         app.post('/inventory', async (req, res) => {
             const addInventoryItem = req.body
             console.log(addInventoryItem);
