@@ -30,20 +30,28 @@ async function run() {
         // // Inventory section API//
         // /////////////////////////
 
-        // get all inventory items
+        // get all inventory items  http://localhost:5000/inventory
         app.get('/inventory', async (req, res) => {
             const query = {}
-            const cursor = inventoriesCollection.find(query)
+            const cursor = inventoriesCollection.find(query);
             const inventories = await cursor.toArray();
             res.send(inventories)
         })
 
-        // get single inventory item by id
+        // get single inventory item by id  http://localhost:5000/inventory/:id
         app.get('/inventory/:id', async (req, res) => {
             const id = req.params.id
-            const query = { _id: ObjectId(id) }
-            const inventory = await inventoriesCollection.findOne(query)
+            const query = { _id: ObjectId(id) };
+            const inventory = await inventoriesCollection.findOne(query);
             res.send(inventory);
+        })
+
+        //delete single inventory item   http://localhost:5000/inventory/:id
+        app.delete('/inventory/:id', async (req, res) => {
+            const id = req.params.id
+            const query = { _id: ObjectId(id) };
+            const result = await inventoriesCollection.deleteOne(query);
+            res.send(result);
         })
     }
     finally {
