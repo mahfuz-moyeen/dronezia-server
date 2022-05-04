@@ -30,7 +30,9 @@ async function run() {
         //  Inventory section API  //
         // /////////////////////// //
 
-        // get all inventory items  // local server >> http://localhost:5000/inventories
+        // get // 
+
+        // all inventory items  // local server >> http://localhost:5000/inventories
         app.get('/inventories', async (req, res) => {
             const query = {}
             const cursor = inventoriesCollection.find(query);
@@ -38,7 +40,7 @@ async function run() {
             res.send(inventories)
         })
 
-        // get 6 inventory items  // local server >> http://localhost:5000/inventory
+        // 6 inventory items  // local server >> http://localhost:5000/inventory
         app.get('/inventory', async (req, res) => {
             const query = {}
             const cursor = inventoriesCollection.find(query);
@@ -46,7 +48,7 @@ async function run() {
             res.send(inventories)
         })
 
-        // get single inventory item by id /// local server >>  http://localhost:5000/inventory/:id
+        // single inventory item by id /// local server >>  http://localhost:5000/inventory/:id
         app.get('/inventory/:id', async (req, res) => {
             const id = req.params.id
             const query = { _id: ObjectId(id) };
@@ -54,7 +56,10 @@ async function run() {
             res.send(inventory);
         })
 
-        //delete single inventory item // local server >> http://localhost:5000/inventory/:id
+
+        // delete //
+
+        // single inventory item // local server >> http://localhost:5000/inventory/:id
         app.delete('/inventory/:id', async (req, res) => {
             const id = req.params.id
             const query = { _id: ObjectId(id) };
@@ -62,13 +67,39 @@ async function run() {
             res.send(result);
         })
 
-        //post single inventory item // local server >>  http://localhost:5000/inventory
+
+        // post //
+
+        // add single inventory item // local server >>  http://localhost:5000/inventory
         app.post('/inventory', async (req, res) => {
             const addInventoryItem = req.body
-            console.log(addInventoryItem);
             const result = await inventoriesCollection.insertOne(addInventoryItem)
             res.send(result)
         })
+
+
+        // put //
+
+        // update quantity inventory item   // local server >> http://localhost:5000/inventory/:id
+        app.put('/inventory/:id', async (req, res) => {
+            const id = req.params.id
+            const updateInventory = req.body
+            const query = { _id: ObjectId(id) };
+            const inventory = await inventoriesCollection.findOne(query);
+            const options = { upsert: true };
+            const updateDoc = {
+                $set: {
+                    name: updateInventory.name ? updateInventory.name : inventory.name,
+                    price: updateInventory.price ? updateInventory.price : inventory.price,
+                    quantity: updateInventory.quantity ? updateInventory.quantity : inventory.quantity,
+                    supplier: updateInventory.supplier ? updateInventory.supplier : inventory.supplier,
+                    description: updateInventory.description ? updateInventory.description : inventory.description
+                },
+            };
+            const result = await inventoriesCollection.updateOne(query, updateDoc, options);
+            res.send(result);
+        })
+
     }
     finally {
 
