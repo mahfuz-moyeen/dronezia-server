@@ -91,13 +91,25 @@ async function run() {
                 $set: {
                     name: updateInventory.name ? updateInventory.name : inventory.name,
                     price: updateInventory.price ? updateInventory.price : inventory.price,
-                    quantity: updateInventory.quantity ? updateInventory.quantity : inventory.quantity,
+                    quantity: updateInventory.quantity,
                     supplier: updateInventory.supplier ? updateInventory.supplier : inventory.supplier,
                     description: updateInventory.description ? updateInventory.description : inventory.description
                 },
             };
             const result = await inventoriesCollection.updateOne(query, updateDoc, options);
             res.send(result);
+        })
+
+        // get 
+        // get item by user email  
+        // local server >> http://localhost:5000/my-item?email=${user.email}
+        // get orders 
+        app.get('/my-item', async (req, res) => {
+            const email = req.query.email
+            const query = { email: email }
+            const cursor = inventoriesCollection.find(query)
+            const result = await cursor.toArray()
+            res.send(result)
         })
 
     }
