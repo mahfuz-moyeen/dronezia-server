@@ -99,12 +99,12 @@ async function run() {
             const result = await inventoriesCollection.updateOne(query, updateDoc, options);
             res.send(result);
         })
-
+        
         // get 
         // get item by user email  
-        // local server >> http://localhost:5000/my-item?email=${user.email}
+        // local server >> http://localhost:5000/myItem?email=${user.email}
         // get orders 
-        app.get('/my-item', async (req, res) => {
+        app.get('/myItem', async (req, res) => {
             const email = req.query.email
             const query = { email: email }
             const cursor = inventoriesCollection.find(query)
