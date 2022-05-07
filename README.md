@@ -6,3 +6,4 @@
 * cors
 * mongodb
 * dotenv
+* JWT (jsonwebtoken)
