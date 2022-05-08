@@ -43,6 +43,7 @@ async function run() {
     try {
         await client.connect();
         const inventoriesCollection = client.db("droneZia").collection("inventory");
+        const messageCollection = client.db("droneZia").collection("message");
 
 
         // /////////////////////// //
@@ -152,6 +153,19 @@ async function run() {
                 return res.status(403).send({ message: 'Forbidden access' })
             }
 
+        })
+
+        // /////////////////////// //
+        //      send message       //
+        // /////////////////////// //
+
+        // post
+        // add message from user  
+        // local server >> http://localhost:5000/message 
+        app.post('/message', async (req, res) => {
+            const addMessage = req.body
+            const result = await messageCollection.insertOne(addMessage)
+            res.send(result)
         })
 
     }
